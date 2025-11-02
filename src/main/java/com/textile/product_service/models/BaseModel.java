@@ -6,16 +6,35 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class BaseModel {
-    public BaseModel(String id) {
-        this.id = id;
-    }
-
-    private String id;
+    private Long id;
     private String createdAt;
     private String updatedAt;
 
     // Additional common fields can be added here
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }
