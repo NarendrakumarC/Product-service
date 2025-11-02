@@ -1,8 +1,11 @@
 package com.textile.product_service.controller;
 
 import com.textile.product_service.dtos.FakeStoreProductDTO;
+import com.textile.product_service.exception.ProductNotFoundException;
 import com.textile.product_service.models.Product;
 import com.textile.product_service.services.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -20,7 +23,7 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public Product getSingleProduct(@PathVariable("productId") Long productId) {
+    public Product getSingleProduct(@PathVariable("productId") Long productId) throws ProductNotFoundException {
         // Logic to retrieve a single product by ID
         // This is a placeholder; actual implementation will involve fetching from a database or service
         // https://fakestoreapi.com/products/2
@@ -58,6 +61,15 @@ public class ProductController {
         // Logic to delete a product by ID
         // This is a placeholder; actual implementation will involve deleting from a database or service
         productService.deleteProduct(productId);
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<String> handleProductNotFoundException(ProductNotFoundException ex) {
+        return new ResponseEntity<>(
+                ex.getProductId() + "is Invalid Product Id. Please try again with valid product Id " +
+                        "and priority hirearchy is given from class level to global handler level"
+                +"Priority Order : Controller Level (try catch) > Controller Class(Local) level > Global Handler Level",
+                HttpStatus.NOT_FOUND);
     }
 
 }

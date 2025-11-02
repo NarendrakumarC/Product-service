@@ -1,6 +1,7 @@
 package com.textile.product_service.services;
 
 import com.textile.product_service.dtos.FakeStoreProductDTO;
+import com.textile.product_service.exception.ProductNotFoundException;
 import com.textile.product_service.models.Category;
 import com.textile.product_service.models.Product;
 import org.springframework.http.HttpEntity;
@@ -36,12 +37,16 @@ public class FakeStoreProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getSingleProduct(Long productId) {
+    public Product getSingleProduct(Long productId) throws ProductNotFoundException {
         // https://fakestoreapi.com/products/2
         ResponseEntity<FakeStoreProductDTO> responseEntity =
                 restTemplate.getForEntity("https://fakestoreapi.com/products/" + productId,
                         FakeStoreProductDTO.class);
         FakeStoreProductDTO fakeStoreProductDTO = responseEntity.getBody();
+        if(fakeStoreProductDTO == null){
+            throw new ProductNotFoundException(productId);
+        }
+
         return convertFakeStoreProductDtoToProduct(fakeStoreProductDTO);
     }
 
