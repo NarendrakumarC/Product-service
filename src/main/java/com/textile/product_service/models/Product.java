@@ -2,17 +2,22 @@ package com.textile.product_service.models;
 
 
 
+import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Entity(name = "products")
 public class Product extends BaseModel {
 
     private String title;
     private String description;
     private Double price;
     private String imageUrl;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
     public String getTitle() {
@@ -55,3 +60,9 @@ public class Product extends BaseModel {
         this.category = category;
     }
 }
+
+/*
+Product --- Category M:1
+    1   -   1
+    Many - 1
+*/

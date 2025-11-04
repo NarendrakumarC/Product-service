@@ -1,14 +1,20 @@
 package com.textile.product_service.models;
 
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@MappedSuperclass
 public class BaseModel {
+    @Id
     private Long id;
+
     private String createdAt;
+
     private String updatedAt;
 
     // Additional common fields can be added here
