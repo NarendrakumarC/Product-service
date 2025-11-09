@@ -21,6 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Override
     List<Product> findAll();
 
+    //All the below query are declared or derived query methods
     //select * from products where title=?
     List<Product> findByTitle(String title);
 
@@ -39,9 +40,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Product save(Product product);
 
+    //Projection Demo with Native Query
+  //  @Query("SELECT p.title AS title, p.price AS price FROM Product p WHERE p.id = 5") This is HQL query
     @Query(value = "SELECT p.title, p.price FROM products p WHERE p.id = 5", nativeQuery = true)
     List<ProductWithTitleAndPrice> findTitleAndPriceById();
 
+    // select all the products where category name = 'Electronics' this is Joined Query
+    // select p.* from products p join categories c on p.category_id=c.id where c.name='Electronics'
+    // If we want to filter values based on the field of associated entity we can use _ (underscore) to navigate
     Optional<Product> findByCategory_Name(String categoryName);
 
 }
