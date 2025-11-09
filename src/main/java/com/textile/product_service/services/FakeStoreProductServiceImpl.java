@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@Service
+@Service("fakeStoreProductService")
 public class FakeStoreProductServiceImpl implements ProductService {
 
     private RestTemplate restTemplate;

@@ -10,7 +10,7 @@ public interface ProductService {
     List<Product> getAllProducts();
     Product getSingleProduct(Long productId) throws ProductNotFoundException;
     Product createProduct(FakeStoreProductDTO product);
-    Product replaceProduct(Long productId, FakeStoreProductDTO fakeStoreProductDTO);
+    Product replaceProduct(Long productId, FakeStoreProductDTO fakeStoreProductDTO) throws ProductNotFoundException;
     void deleteProduct(Long productId);
 
 }
