@@ -4,6 +4,7 @@ import com.textile.product_service.dtos.FakeStoreProductDTO;
 import com.textile.product_service.exception.ProductNotFoundException;
 import com.textile.product_service.models.Product;
 import com.textile.product_service.services.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +18,24 @@ import java.util.List;
 public class ProductController {
 
     private ProductService selfProductService;
-    private ProductService fakeProductService;
+    //private ProductService fakeProductService;
 
-    public ProductController
+    // Constructor Injection for Junit testing
+    public ProductController(@Qualifier("selfProductService") ProductService selfProductService) {
+        this.selfProductService = selfProductService;
+    }
+
+
+
+    /* public ProductController
             (@Qualifier("selfProductService") ProductService selfProductService,
             @Qualifier("fakeStoreProductService") ProductService fakeProductService)
     {
         this.selfProductService = selfProductService;
         this.fakeProductService = fakeProductService;
-    }
+    }*/
 
+/*
     @GetMapping("/{productId}")
     public Product getSingleProduct(@PathVariable("productId") Long productId) throws ProductNotFoundException {
         // Logic to retrieve a single product by ID
@@ -39,10 +48,12 @@ public class ProductController {
     public List<Product> getAllProducts() {
         // Logic to retrieve all products
         // This is a placeholder; actual implementation will involve fetching from a database or service
-       /* return List.of(
+       */
+/* return List.of(
             new Product("1", "Product 1", "Description for product 1", 19.99, "http://example.com/image1.jpg", new Category("1", "Category 1", "Description for category 1")),
             new Product("2", "Product 2", "Description for product 2", 29.99, "http://example.com/image2.jpg", new Category("2", "Category 2", "Description for category 2"))
-        );*/
+        );*//*
+
 
         return fakeProductService.getAllProducts();
     }
@@ -67,6 +78,7 @@ public class ProductController {
         // This is a placeholder; actual implementation will involve deleting from a database or service
         fakeProductService.deleteProduct(productId);
     }
+*/
 
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<String> handleProductNotFoundException(ProductNotFoundException ex) {
@@ -81,8 +93,23 @@ public class ProductController {
     public Product getSingleSelfProduct(@PathVariable("productId") Long productId) throws ProductNotFoundException {
         // Logic to retrieve a single product by ID
         // This is a placeholder; actual implementation will involve fetching from a database or service
-        // https://fakestoreapi.com/products/2
-        return selfProductService.getSingleProduct(productId);
+        System.out.println("Debug for testing controller req from test method");
+
+        //return selfProductService.getSingleProduct(productId);
+        //return new Product();
+        Product product = selfProductService.getSingleProduct(productId); //@16640 same mock object for testing
+
+        // Case1 : Both acutal and expected are pointing to same object address in heap memory hence test is passed
+        // product.setTitle("IPhone 14 Pro Max");
+
+        // Case2 : Both actual and expected are different object address in heap memory but having same values , test is failed
+       /* Product expectedProduct = new Product(); //@15540
+        expectedProduct.setId(productId);
+        expectedProduct.setTitle("IPhone 14 Pro Max");
+        expectedProduct.setDescription("Latest Apple iPhone 14 Pro with advanced features");
+        expectedProduct.setPrice(130000.00);*/
+
+        return product;
     }
 
     @GetMapping("/self")
